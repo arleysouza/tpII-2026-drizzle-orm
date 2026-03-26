@@ -6,10 +6,6 @@
     "db:generate": "drizzle-kit generate",
     "db:migrate": "tsx src/create_entity.ts",
     "db:studio": "drizzle-kit studio",
-    "user:update": "tsx src/update_entity.ts",
-    "user:delete": "tsx src/delete_entity.ts",
-    "user:insert": "tsx src/insert_entity.ts",
-    "user:list": "tsx src/list_users.ts",
     "demo": "tsx src/demo.ts"
   },
   "keywords": [
