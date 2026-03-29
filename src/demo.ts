@@ -1,38 +1,40 @@
-import { fecharConexao } from "./db";
-import { usuarioRepository } from "./repositories/usuario.repository";
+import { closeConnection, ensureUsersTable } from "./db";
+import { create, getAll, update, remove } from "./repository";
 
 async function main(): Promise<void> {
-  const nomes = ["Ana", "Bruno", "Carla"];
-  const usuariosCriados = [];
+  await ensureUsersTable();
+  console.log("Tabela users pronta.");
 
-  console.log("Inserindo usuarios de exemplo...");
+  const usuarioCriado = await create("Ana");
+  console.log(
+    `\nUsuário criado -> id: ${usuarioCriado.id}, nome: ${usuarioCriado.nome}`,
+  );
 
-  for (const nome of nomes) {
-    const usuario = await usuarioRepository.criar(nome);
-    usuariosCriados.push(usuario);
-    console.log(`Usuario criado -> id: ${usuario.id}, nome: ${usuario.nome}`);
-  }
+  console.log("\nUsuários após CREATE:");
+  console.table(await getAll());
 
-  if (usuariosCriados.length >= 2) {
-    const primeiroUsuario = usuariosCriados[0];
-    const segundoUsuario = usuariosCriados[1];
+  const usuarioAtualizado = await update(usuarioCriado.id, "Ana Maria");
+  console.log(
+    `\nUsuário atualizado -> id: ${usuarioAtualizado.id}, nome: ${usuarioAtualizado.nome}`,
+  );
 
-    await usuarioRepository.alterar(primeiroUsuario.id, "Ana Atualizada");
-    console.log(`\nUsuario atualizado -> id: ${primeiroUsuario.id}, nome: Ana Atualizada`);
+  console.log("\nUsuários após UPDATE:");
+  console.table(await getAll());
 
-    const usuarioRemovido = await usuarioRepository.remover(segundoUsuario.id);
-    console.log(`Usuario removido -> id: ${usuarioRemovido.id}, nome: ${usuarioRemovido.nome}`);
-  }
+  const usuarioRemovido = await remove(usuarioCriado.id);
+  console.log(
+    `\nUsuário removido -> id: ${usuarioRemovido.id}, nome: ${usuarioRemovido.nome}`,
+  );
 
-  console.log("\nUsuarios persistidos no banco apos INSERT, UPDATE e DELETE:");
-  console.table(await usuarioRepository.listar());
+  console.log("\nUsuários após DELETE:");
+  console.table(await getAll());
 }
 
 main()
   .catch((error: unknown) => {
-    console.error("Erro na demonstracao:", error);
+    console.error("Erro na demonstração:", error);
     process.exitCode = 1;
   })
   .finally(async () => {
-    await fecharConexao();
+    await closeConnection();
   });
