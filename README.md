@@ -173,21 +173,19 @@ O fluxo é este:
 2. roda `npm run migration:generate`
 3. o Drizzle compara o schema atual com o histórico da pasta `drizzle/meta`
 4. ele gera um novo arquivo SQL em `drizzle/`
-5. você roda `npm run migration:migrate` para aplicar no banco
+5. você roda `npm run migration:runtime` para aplicar no banco
 
 Os scripts disponíveis são:
 
 ```bash
 npm run migration:generate
-npm run migration:migrate
 npm run migration:runtime
 ```
 
 O que cada um faz:
 
 - `migration:generate`: gera uma nova migration SQL com base nas mudanças do schema
-- `migration:migrate`: aplica as migrations pendentes usando o `drizzle.config.js`
-- `migration:runtime`: aplica as migrations via `src/migrate.ts`, útil quando você quer rodar isso dentro da aplicação ou de um script TypeScript
+- `migration:runtime`: aplica as migrations pendentes via `src/migrate.ts`
 
 ### Exemplo de alteração
 
@@ -203,7 +201,7 @@ o comando `npm run migration:generate` deverá criar uma migration parecida com:
 ALTER TABLE "users" ADD COLUMN "email" text NOT NULL;
 ```
 
-Depois, `npm run migration:migrate` aplica essa alteração no banco.
+Depois, `npm run migration:runtime` aplica essa alteração no banco.
 
 ### Como desfazer uma migration
 
@@ -214,7 +212,7 @@ Em vez disso, o procedimento recomendado é:
 1. alterar novamente o `src/schema.ts` para o estado desejado
 2. rodar `npm run migration:generate`
 3. revisar a nova migration gerada
-4. rodar `npm run migration:migrate`
+4. rodar `npm run migration:runtime`
 
 Exemplo:
 
@@ -325,12 +323,6 @@ npm install
 
 ```bash
 npm run migration:generate
-npm run migration:migrate
-```
-
-Se quiser aplicar as migrations via TypeScript, use:
-
-```bash
 npm run migration:runtime
 ```
 
@@ -379,25 +371,3 @@ Este projeto foi organizado para destacar três ideias:
 - **demo**: mostra o fluxo completo de uso
 
 Essa separação ajuda a explicar onde termina a lógica de banco e onde começa a lógica da aplicação.
-
-## Limitações intencionais do exemplo
-
-Este projeto é propositalmente simples. Por isso, ele não inclui:
-
-- validação avançada de entrada
-- API HTTP
-- testes automatizados
-- múltiplas entidades
-
-Nada disso está “faltando por engano”. Foi uma escolha para manter o foco no CRUD com Drizzle.
-
-## Resumo
-
-Se a intenção for ensinar o básico de ORM com PostgreSQL, este projeto mostra o caminho completo com poucos arquivos:
-
-- definição da tabela
-- conexão com banco
-- operações CRUD
-- execução em script único
-
-Isso torna o exemplo pequeno o suficiente para ser explicado em aula sem esconder os conceitos principais atrás de muita estrutura.

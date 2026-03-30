@@ -1,0 +1,20 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1774894767850,
+      "tag": "0000_curved_the_initiative",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1774894812174,
+      "tag": "0001_numerous_blur",
+      "breakpoints": true
+    }
+  ]
+}
