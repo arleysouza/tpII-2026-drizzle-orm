@@ -47,3 +47,4 @@ async function remove(id: number): Promise<Usuario> {
 }
 
 export { create, getAll, update, remove };
+

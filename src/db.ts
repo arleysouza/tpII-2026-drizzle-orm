@@ -13,15 +13,6 @@ const pool = new Pool({
 
 export const db = drizzle(pool, { schema });
 
-export async function ensureUsersTable(): Promise<void> {
-  await pool.query(`
-    CREATE TABLE IF NOT EXISTS users (
-      id SERIAL PRIMARY KEY,
-      nome TEXT NOT NULL
-    )
-  `);
-}
-
 export async function closeConnection(): Promise<void> {
   await pool.end();
 }
